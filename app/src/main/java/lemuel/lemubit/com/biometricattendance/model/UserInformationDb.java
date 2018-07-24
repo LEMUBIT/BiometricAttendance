@@ -2,7 +2,7 @@ package lemuel.lemubit.com.biometricattendance.model;
 
 import io.realm.RealmObject;
 
-public class userInformationDb extends RealmObject {
+public class UserInformationDb extends RealmObject{
     private int id;
     private byte [] userPhoto;
     private String clockedState;
