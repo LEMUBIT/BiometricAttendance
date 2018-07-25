@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rollbar.android.Rollbar;
+import com.tomerrosenfeld.customanalogclockview.CustomAnalogClock;
 
 import lemuel.lemubit.com.biometricattendance.nativeFeatures.NativeSensor;
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations;
@@ -16,15 +17,17 @@ import lemuel.lemubit.com.biometricattendance.view.IUIOperations;
 public class MainActivity extends AppCompatActivity implements IUIOperations {
     MaterialDialog materialDialog;
     MaterialDialog.Builder dialogBuilder;
+    CustomAnalogClock customAnalogClock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setProgressDialog();
+        customAnalogClock = findViewById(R.id.analog_clock);
+        customAnalogClock.setAutoUpdate(true);
         Rollbar.init(this);
-        NativeSensor.INSTANCE.init(this, this);
-        throw new RuntimeException();
+       // NativeSensor.INSTANCE.init(this, this);
     }
 
     @Override
@@ -70,6 +73,6 @@ public class MainActivity extends AppCompatActivity implements IUIOperations {
 
     @Override
     public void showInfoToast(String info) {
-        Toast.makeText(this, "Message: "+info, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Message: " + info, Toast.LENGTH_SHORT).show();
     }
 }
