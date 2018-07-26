@@ -1,4 +1,4 @@
-package lemuel.lemubit.com.biometricattendance;
+package lemuel.lemubit.com.biometricattendance.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,25 +9,24 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rollbar.android.Rollbar;
-import com.tomerrosenfeld.customanalogclockview.CustomAnalogClock;
 
-import lemuel.lemubit.com.biometricattendance.nativeFeatures.NativeSensor;
-import lemuel.lemubit.com.biometricattendance.view.IUIOperations;
+import lemuel.lemubit.com.biometricattendance.R;
+import lemuel.lemubit.com.biometricattendance.util.AdminDialogHelper;
+import lemuel.lemubit.com.biometricattendance.util.ProgressDialogHelper;
 
-public class MainActivity extends AppCompatActivity implements IUIOperations {
-    MaterialDialog materialDialog;
-    MaterialDialog.Builder dialogBuilder;
-    CustomAnalogClock customAnalogClock;
+public class MainActivity extends AppCompatActivity implements IUIOperations, AdminLogin {
+    MaterialDialog progressMaterialDialog;
+    MaterialDialog adminMaterialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setProgressDialog();
-        customAnalogClock = findViewById(R.id.analog_clock);
-        customAnalogClock.setAutoUpdate(true);
         Rollbar.init(this);
-       // NativeSensor.INSTANCE.init(this, this);
+        // NativeSensor.INSTANCE.init(this, this);
+        setAdminLoginDialog();
+        adminMaterialDialog.show();
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements IUIOperations {
     public void showProgressDialog(String title, String message) {
         runOnUiThread(new Runnable() {
             public void run() {
-                materialDialog.show();
+                progressMaterialDialog.show();
             }
         });
     }
@@ -55,24 +54,35 @@ public class MainActivity extends AppCompatActivity implements IUIOperations {
     public void dismissProgressDialog() {
         runOnUiThread(new Runnable() {
             public void run() {
-                materialDialog.dismiss();
+                progressMaterialDialog.dismiss();
             }
         });
     }
 
     @Override
     public void setProgressDialog() {
-        dialogBuilder = new MaterialDialog.Builder(this)
-                .title(R.string.enrol)
-                .content(R.string.press_finger)
-                .progress(true, 0)
-                .progressIndeterminateStyle(true);
-
-        materialDialog = dialogBuilder.build();
+        progressMaterialDialog = ProgressDialogHelper.getBuilder(this,
+                getResources().getString(R.string.enrol),
+                getResources().getString(R.string.press_finger))
+                .build();
     }
 
     @Override
     public void showInfoToast(String info) {
         Toast.makeText(this, "Message: " + info, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void AdminLoginSuccess() {
+
+    }
+
+    @Override
+    public void AdminLoginFailed() {
+
+    }
+
+    public void setAdminLoginDialog() {
+        adminMaterialDialog = AdminDialogHelper.getBuilder(this, this).build();
     }
 }

@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@color/lightTextColor</item>
+        <item name="android:elevation">3dp</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">90dp</item>
+        <item name="android:buttonStyle">@style/Base.TextAppearance.AppCompat.Large</item>
+        <item name="android:textSize">30dp</item>
+    </style>
 </resources>

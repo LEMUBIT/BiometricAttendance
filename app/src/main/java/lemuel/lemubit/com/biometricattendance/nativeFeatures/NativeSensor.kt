@@ -65,8 +65,8 @@ object NativeSensor {
 
     /**@Returns the ID of saved fingerprint data**/
     fun saveFingerPrint(application: Application, result: Result, iFingerPrintOperation: IFingerPrintOperation): Int {
-        var fpFeat: ByteArray?
-        var fpTemp: ByteArray?
+        var fingerPrintData: ByteArray?
+        var fingerPrintTemplate: ByteArray?
         var res: Result? = result
         var id = 0
 
@@ -74,8 +74,8 @@ object NativeSensor {
             iFingerPrintOperation.dismissProgressDialog()
             throw RuntimeException("result is null")
         }
-        fpFeat = res.data as ByteArray
-        res = Bione.makeTemplate(fpFeat, fpFeat, fpFeat)
+        fingerPrintData = res.data as ByteArray
+        res = Bione.makeTemplate(fingerPrintData, fingerPrintData, fingerPrintData)
 
         if (res.error != Bione.RESULT_OK) {
             iFingerPrintOperation.dismissProgressDialog()
@@ -83,7 +83,7 @@ object NativeSensor {
             throw RuntimeException("result is not OK")
         }
 
-        fpTemp = res.data as ByteArray
+        fingerPrintTemplate = res.data as ByteArray
         id = Bione.getFreeID()
 
         if (id < 0) {
@@ -92,7 +92,7 @@ object NativeSensor {
             throw RuntimeException("result is not OK")
         }
 
-        val ret = Bione.enroll(id, fpTemp)
+        val ret = Bione.enroll(id, fingerPrintTemplate)
 
         if (ret != Bione.RESULT_OK) {
             iFingerPrintOperation.dismissProgressDialog()
