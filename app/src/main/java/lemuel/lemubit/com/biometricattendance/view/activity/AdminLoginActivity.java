@@ -1,4 +1,4 @@
-package lemuel.lemubit.com.biometricattendance.view;
+package lemuel.lemubit.com.biometricattendance.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

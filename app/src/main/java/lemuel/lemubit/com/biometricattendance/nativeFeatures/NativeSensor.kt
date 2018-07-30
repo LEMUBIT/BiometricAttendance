@@ -102,7 +102,6 @@ object NativeSensor {
 
         iFingerPrintOperation.showInfoToast(application.getString(R.string.enroll_success) + id)
 
-
         iFingerPrintOperation.dismissProgressDialog()
         return id
     }

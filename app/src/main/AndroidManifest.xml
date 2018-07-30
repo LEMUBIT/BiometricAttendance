@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             android:name="com.rollbar.android.ACCESS_TOKEN"
             android:value="a81fdaa661dd4864b1e35b0a48bc57e7" />
 
-        <activity android:name=".view.AdminLoginActivity"></activity>
+        <activity android:name=".view.activity.AdminLoginActivity"></activity>
     </application>
 
 </manifest>

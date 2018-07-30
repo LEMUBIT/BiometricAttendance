@@ -1,4 +1,4 @@
-package lemuel.lemubit.com.biometricattendance.view;
+package lemuel.lemubit.com.biometricattendance.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import com.rollbar.android.Rollbar;
 import lemuel.lemubit.com.biometricattendance.R;
 import lemuel.lemubit.com.biometricattendance.util.AdminDialogHelper;
 import lemuel.lemubit.com.biometricattendance.util.ProgressDialogHelper;
+import lemuel.lemubit.com.biometricattendance.view.AdminLogin;
+import lemuel.lemubit.com.biometricattendance.view.IUIOperations;
 
 public class MainActivity extends AppCompatActivity implements IUIOperations, AdminLogin {
     MaterialDialog progressMaterialDialog;
@@ -73,12 +75,12 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
     }
 
     @Override
-    public void AdminLoginSuccess() {
+    public void adminLoginSuccess() {
 
     }
 
     @Override
-    public void AdminLoginFailed() {
+    public void adminLoginFailed() {
 
     }
 
