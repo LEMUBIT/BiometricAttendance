@@ -5,12 +5,13 @@ import android.os.Bundle;
 
 import lemuel.lemubit.com.biometricattendance.R;
 
-public class AdminLoginActivity extends AppCompatActivity {
+public class AdminHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_login);
-
+        setContentView(R.layout.activity_admin_home);
+        //todo:: add activity with fragment which would handle registration flow step by step
+        //todo:: finish then click next to move to next fragment
     }
 }

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.MainActivity">
+    tools:context=".view.activity.AdminHomeActivity">
 
     <ImageView
-        android:id="@+id/home_img_logo"
+        android:id="@+id/admin_img_logo"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginEnd="8dp"
@@ -21,29 +21,26 @@
         />
 
     <Button
-        android:id="@+id/btn_clockIn"
+        android:id="@+id/btn_newcapture"
         style="@style/ButtonStyle"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
-        android:text="Clock In"
+        android:text="New Capture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_img_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_img_logo" />
 
     <Button
-        android:id="@+id/btn_clockOut"
+        android:id="@+id/btn_viewregister"
         style="@style/ButtonStyle"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="Clock Out"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="View Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_clockIn"
-        app:layout_constraintVertical_bias="0.247" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_newcapture" />
 </android.support.constraint.ConstraintLayout>
