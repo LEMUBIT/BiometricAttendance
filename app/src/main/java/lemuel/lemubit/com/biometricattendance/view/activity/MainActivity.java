@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
     MaterialDialog progressMaterialDialog;
     MaterialDialog adminMaterialDialog;
 
+    //TODO: remove code not needed
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,20 +46,12 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
 
     @Override
     public void showProgressDialog(String title, String message) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                progressMaterialDialog.show();
-            }
-        });
+        runOnUiThread(() -> progressMaterialDialog.show());
     }
 
     @Override
     public void dismissProgressDialog() {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                progressMaterialDialog.dismiss();
-            }
-        });
+        runOnUiThread(() -> progressMaterialDialog.dismiss());
     }
 
     @Override

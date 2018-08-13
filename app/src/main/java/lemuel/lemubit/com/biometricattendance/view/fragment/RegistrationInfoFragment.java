@@ -65,7 +65,8 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
 
         btnNext.setOnClickListener(view12 -> {
             //todo: send complete user info
-            registrationInfoListener.onUserInfoGotten();
+            if (validate() == successfulValidation)
+                registrationInfoListener.onUserInfoGotten();
         });
     }
 
@@ -78,11 +79,7 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
      * @returns Integer indicating if all fields have been entered (1) or if not all fields have been entered (0)
      */
     private int validate() {
-        if (!isEmpty(firstName.getText().toString()) && !isEmpty(lastName.getText().toString()) && !isEmpty(email.getText().toString()) && !isEmpty(phoneNumber.getText().toString()) && dateIsSet) {
-            return successfulValidation;
-        } else {
-            return failedValidation;
-        }
+        return !isEmpty(firstName.getText().toString()) && !isEmpty(lastName.getText().toString()) && !isEmpty(email.getText().toString()) && !isEmpty(phoneNumber.getText().toString()) && dateIsSet ? successfulValidation : failedValidation;
     }
 
     public interface RegistrationInfoListener {
