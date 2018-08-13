@@ -5,9 +5,15 @@ import android.os.Bundle;
 
 import lemuel.lemubit.com.biometricattendance.R;
 import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationInfoFragment;
+import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationLeftHandFragment;
+import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationRightHandFragment;
 import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationTakePicFragment;
 
-public class NewCaptureActivity extends AppCompatActivity implements RegistrationInfoFragment.RegistrationInfoListener, RegistrationTakePicFragment.RegistrationTakePicListener {
+public class NewCaptureActivity extends AppCompatActivity implements
+        RegistrationInfoFragment.RegistrationInfoListener,
+        RegistrationTakePicFragment.RegistrationTakePicListener,
+        RegistrationLeftHandFragment.RegistrationLeftHandListener,
+        RegistrationRightHandFragment.RegistrationRightHandListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,16 @@ public class NewCaptureActivity extends AppCompatActivity implements Registratio
 
     @Override
     public void onUserPicGotten() {
+
+    }
+
+    @Override
+    public void onLeftHandRegistered() {
+
+    }
+
+    @Override
+    public void onRightHandRegistered() {
 
     }
 }

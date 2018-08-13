@@ -87,12 +87,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Date of Birth:"
-        app:layout_constraintBottom_toTopOf="@+id/txt_lbl_date_of_birth"
+        app:layout_constraintBottom_toTopOf="@+id/txt_date_picker"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_lbl_date_of_birth" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_date_picker" />
 
     <TextView
-        android:id="@+id/txt_lbl_date_of_birth"
+        android:id="@+id/txt_date_picker"
         style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/txt_reg_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -117,10 +117,10 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_lbl_date_of_birth" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_date_picker" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/txt_reg_phone_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -131,10 +131,10 @@
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_reg_email" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_reg_next"
         style="@style/ButtonStyle"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -143,5 +143,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_reg_phone_number" />
 </android.support.constraint.ConstraintLayout>
