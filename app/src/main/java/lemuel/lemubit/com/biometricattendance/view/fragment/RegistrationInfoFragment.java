@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import lemuel.lemubit.com.biometricattendance.R;
 import lemuel.lemubit.com.biometricattendance.util.DateFormatHelper;
@@ -25,10 +27,13 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
     Boolean dateIsSet = false;
     EditText firstName;
     EditText lastName;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
     EditText email;
     EditText phoneNumber;
     int successfulValidation = 1;
     int failedValidation = 0;
+    String selectedDate;
 
 
     @Override
@@ -48,7 +53,7 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
         super.onViewCreated(view, savedInstanceState);
         firstName = view.findViewById(R.id.txt_reg_firstname);
         lastName = view.findViewById(R.id.txt_reg_lastname);
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+        radioGroup = view.findViewById(R.id.radioGroup);
 
         TextView datePicker = view.findViewById(R.id.txt_date_picker);
         datePicker.setOnClickListener(view1 -> {
@@ -64,15 +69,18 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
         Button btnNext = view.findViewById(R.id.btn_reg_next);
 
         btnNext.setOnClickListener(view12 -> {
-            //todo: send complete user info
-            if (validate() == successfulValidation)
-                registrationInfoListener.onUserInfoGotten();
+            if (validate() == successfulValidation) {
+                finishProcess(view);
+            } else {
+                Toast.makeText(getActivity(), "Fill all fields!", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         dateIsSet = true;
+        selectedDate = DateFormatHelper.INSTANCE.formatDateToDayMonthYear(i, i1, i2);
     }
 
     /**
@@ -82,7 +90,20 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
         return !isEmpty(firstName.getText().toString()) && !isEmpty(lastName.getText().toString()) && !isEmpty(email.getText().toString()) && !isEmpty(phoneNumber.getText().toString()) && dateIsSet ? successfulValidation : failedValidation;
     }
 
+    private void finishProcess(View view) {
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        // find the radiobutton by returned id
+        radioButton = view.findViewById(selectedId);
+
+        registrationInfoListener.onUserInfoGotten(
+                firstName.getText().toString(),
+                lastName.getText().toString(),
+                radioButton.getText().toString(),
+                selectedDate, email.getText().toString(),
+                phoneNumber.getText().toString());
+    }
+
     public interface RegistrationInfoListener {
-        void onUserInfoGotten();
+        void onUserInfoGotten(String firstName, String lastName, String sex, String dateOfBirth, String email, String phoneNumber);
     }
 }

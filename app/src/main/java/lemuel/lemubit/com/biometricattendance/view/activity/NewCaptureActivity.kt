@@ -14,7 +14,17 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
 
     lateinit var dialogBuilder: MaterialDialog.Builder
     lateinit var dialog: MaterialDialog
+
     var leftFingerIDMap = HashMap<Int, Int>()
+    var rightFingerIDMap = HashMap<Int, Int>()
+
+    lateinit var firstName: String
+    lateinit var lastName: String
+    lateinit var sex: String
+    lateinit var dateOfBirth: String
+    lateinit var email: String
+    lateinit var phoneNumber: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_capture)
@@ -42,8 +52,14 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
 
     }
 
-    override fun onUserInfoGotten() {
-
+    override fun onUserInfoGotten(firstName: String, lastName: String, sex: String, dateOfBirth: String, email: String, phoneNumber: String) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.sex = sex
+        this.dateOfBirth = dateOfBirth
+        this.email = email
+        this.phoneNumber = phoneNumber
+        //todo transit to next fragment
     }
 
     override fun onUserPicGotten() {
@@ -56,6 +72,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
     }
 
     override fun onRightHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
-
+        rightFingerIDMap = fingerPrintIdMap
+        //todo transit to next fragment
     }
 }
