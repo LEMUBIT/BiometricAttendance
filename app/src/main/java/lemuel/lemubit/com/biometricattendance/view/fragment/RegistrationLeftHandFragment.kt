@@ -3,9 +3,11 @@ package lemuel.lemubit.com.biometricattendance.view.fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.mapzen.speakerbox.Speakerbox
 import com.wepoy.fp.FingerprintImage
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -17,16 +19,19 @@ import lemuel.lemubit.com.biometricattendance.view.IFingerPrintOperation
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations
 
 class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
-    internal lateinit var registrationLeftHandListener: RegistrationLeftHandListener
-    internal lateinit var iuiOperations: IUIOperations
-    var currentFinger = Fingers.THUMB
+    private lateinit var registrationLeftHandListener: RegistrationLeftHandListener
+    private lateinit var iuiOperations: IUIOperations
+    private var allFingersCaptured = false
     lateinit var currentContext: Context
+    lateinit var speakerbox: Speakerbox
+    var currentFinger = Fingers.THUMB
+
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         registrationLeftHandListener = (context as RegistrationLeftHandListener?)!!
         iuiOperations = (context as IUIOperations)
-        currentContext = this!!.activity!!
-
+        currentContext = this.activity!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,32 +40,80 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        speakerbox = Speakerbox(activity?.application)
+        speakerbox.enableVolumeControl(activity)
         btn_capture_left_fingers.setOnClickListener {
-            NativeSensor.getFingerPrintDataObservable(currentContext, iuiOperations, this)//TODO continue from here
+            if (!allFingersCaptured) {
+                playInstruction()
+                NativeSensor.getFingerPrintDataObservable(currentContext, iuiOperations, this).subscribe(observer)
+            } else {
+                speakerbox.play(getString(R.string.proceed_with_registration))
+            }
         }
     }
 
     override fun updateFingerPrintImage(fi: FingerprintImage?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        activity?.runOnUiThread {
+            val bitmap = Fingers.getBitmap(activity, fi)
+            image_left_fingerprint.setImageBitmap(bitmap)
+        }
     }
 
     private val observer = object : Observer<Int> {
         override fun onComplete() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Log.d("RxJAVALeftHand:", "completed")
         }
 
         override fun onSubscribe(d: Disposable) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Log.d("RxJAVALeftHand:", "subscribed")
         }
 
-        override fun onNext(t: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        override fun onNext(id: Int) {
+            if (Fingers.hasValidId(id)) {
+                fingerPrintGotten(currentFinger)
+                nextFinger()
+            } else {
+                tellUserToTryAgain()
+            }
         }
 
         override fun onError(e: Throwable) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
+    }
+
+    private fun playInstruction() {
+        when (currentFinger) {
+            Fingers.THUMB -> speakerbox.play(getString(R.string.place_left_thumb))
+            Fingers.INDEX_FINGER -> speakerbox.play(getString(R.string.place_left_index))
+            Fingers.MIDDLE_FINGER -> speakerbox.play(getString(R.string.place_left_middle))
+            Fingers.RING_FINGER -> speakerbox.play(getString(R.string.place_left_ring))
+            Fingers.PINKY_FINGER -> speakerbox.play(getString(R.string.place_left_pinky))
+        }
+    }
+
+    private fun nextFinger() {
+        if (currentFinger < Fingers.PINKY_FINGER) {
+            currentFinger++
+        } else {
+            allFingersCaptured = true
+        }
+    }
+
+    private fun fingerPrintGotten(currentFinger: Int) {
+        speakerbox.play(getString(R.string.fingerprint_gotten))
+        when (currentFinger) {
+            Fingers.THUMB -> animation_left_thumb.visibility = View.VISIBLE
+            Fingers.INDEX_FINGER -> animation_left_index.visibility = View.VISIBLE
+            Fingers.MIDDLE_FINGER -> animation_left_middle.visibility = View.VISIBLE
+            Fingers.RING_FINGER -> animation_left_ring.visibility = View.VISIBLE
+            Fingers.PINKY_FINGER -> animation_left_pinky.visibility = View.VISIBLE
+        }
+    }
+
+    private fun tellUserToTryAgain() {
+        speakerbox.play(getString(R.string.try_again))
     }
 
     interface RegistrationLeftHandListener {

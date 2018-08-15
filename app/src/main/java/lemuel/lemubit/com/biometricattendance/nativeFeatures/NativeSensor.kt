@@ -16,7 +16,7 @@ import lemuel.lemubit.com.biometricattendance.view.IUIOperations
 
 object NativeSensor {
     @SuppressLint("SdCardPath")
-    val FP_DB_PATH = "/sdcard/fp.db"
+    private val FP_DB_PATH = "/sdcard/fp.db"
 
     @JvmStatic
 /*Initialize fingerprint device*/
@@ -35,8 +35,8 @@ object NativeSensor {
     }.start()
 
     @JvmStatic
-            /**@Returns the raw data of fingerprint scan**/
-    fun getFingerPrintData(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Result? {
+    /**@Returns the raw data of fingerprint scan**/
+    private fun getFingerPrintData(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Result? {
         val fingerprintScanner: FingerprintScanner = FingerprintScanner.getInstance(currentContext.applicationContext)
         var fingerprintImage: FingerprintImage
         var result: Result?
@@ -68,8 +68,8 @@ object NativeSensor {
     }
 
     @JvmStatic
-            /**@Returns the ID of saved fingerprint data**/
-    fun saveFingerPrint(context: Context, result: Result, iuiOperations: IUIOperations): Int {
+    /**@Returns the ID of saved fingerprint data**/
+    private fun saveFingerPrint(context: Context, result: Result, iuiOperations: IUIOperations): Int {
         var fingerPrintData: ByteArray?
         var fingerPrintTemplate: ByteArray?
         var res: Result? = result
@@ -114,7 +114,7 @@ object NativeSensor {
 
     @JvmStatic
             /**@Returns an Observable which would run getFingerPrintData() in a background thread**/
-    fun getFingerPrintDataObservable(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Observable<Int?>? {
+    fun getFingerPrintDataObservable(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Observable<Int> {
         return Observable.defer {
             Observable.just(getFingerPrintData(currentContext, iuiOperations, iFingerPrintOperation))
                     .map { result -> NativeSensor.saveFingerPrint(currentContext.applicationContext, result, iuiOperations) }
