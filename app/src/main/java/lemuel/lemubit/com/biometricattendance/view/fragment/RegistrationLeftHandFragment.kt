@@ -3,7 +3,6 @@ package lemuel.lemubit.com.biometricattendance.view.fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,9 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
     lateinit var speakerbox: Speakerbox
     var currentFinger = Fingers.THUMB
 
+    //maps the finger count to the ID of the fingerprint
+    // so <1,44> is for the first finger that has an ID of 44
+    var fingerIDMap = HashMap<Int, Int>()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -42,6 +44,7 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
         super.onViewCreated(view, savedInstanceState)
         speakerbox = Speakerbox(activity?.application)
         speakerbox.enableVolumeControl(activity)
+
         btn_capture_left_fingers.setOnClickListener {
             if (!allFingersCaptured) {
                 playInstruction()
@@ -49,6 +52,10 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
             } else {
                 speakerbox.play(getString(R.string.proceed_with_registration))
             }
+        }
+
+        btn_leftHandFrag_next.setOnClickListener {
+            registrationLeftHandListener.onLeftHandRegistered(fingerIDMap)
         }
     }
 
@@ -61,15 +68,14 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
 
     private val observer = object : Observer<Int> {
         override fun onComplete() {
-            Log.d("RxJAVALeftHand:", "completed")
         }
 
         override fun onSubscribe(d: Disposable) {
-            Log.d("RxJAVALeftHand:", "subscribed")
         }
 
         override fun onNext(id: Int) {
             if (Fingers.hasValidId(id)) {
+                fingerIDMap.put(currentFinger, id)
                 fingerPrintGotten(currentFinger)
                 nextFinger()
             } else {
@@ -78,7 +84,7 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
         }
 
         override fun onError(e: Throwable) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            tellUserToTryAgain()
         }
 
     }
@@ -98,6 +104,7 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
             currentFinger++
         } else {
             allFingersCaptured = true
+            enableNext()
         }
     }
 
@@ -116,7 +123,11 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
         speakerbox.play(getString(R.string.try_again))
     }
 
+    private fun enableNext() {
+        btn_leftHandFrag_next.visibility = View.VISIBLE
+    }
+
     interface RegistrationLeftHandListener {
-        fun onLeftHandRegistered()
+        fun onLeftHandRegistered(fingerPrintIdMap: HashMap<Int, Int>)
     }
 }

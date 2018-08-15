@@ -1,9 +1,8 @@
 package lemuel.lemubit.com.biometricattendance.view.activity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
-
 import lemuel.lemubit.com.biometricattendance.R
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations
 import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationInfoFragment
@@ -15,7 +14,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
 
     lateinit var dialogBuilder: MaterialDialog.Builder
     lateinit var dialog: MaterialDialog
-
+    var leftFingerIDMap = HashMap<Int, Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_capture)
@@ -51,8 +50,9 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
 
     }
 
-    override fun onLeftHandRegistered() {
-
+    override fun onLeftHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
+        leftFingerIDMap = fingerPrintIdMap
+        //todo transit to next fragment
     }
 
     override fun onRightHandRegistered() {
