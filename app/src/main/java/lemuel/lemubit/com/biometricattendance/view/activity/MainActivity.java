@@ -1,5 +1,6 @@
 package lemuel.lemubit.com.biometricattendance.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -29,7 +30,13 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
         Rollbar.init(this);
         // NativeSensor.INSTANCE.init(this, this);
         setAdminLoginDialog();
-        adminMaterialDialog.show();
+        testCode();
+    }
+
+    //TODO remove when done
+    private void testCode() {
+        startActivity(new Intent(this, NewCaptureActivity.class));
+        //adminMaterialDialog.show();
     }
 
     @Override
@@ -69,12 +76,12 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
 
     @Override
     public void adminLoginSuccess() {
-
+        startActivity(new Intent(this, AdminHomeActivity.class));
     }
 
     @Override
     public void adminLoginFailed() {
-
+        Toast.makeText(this, "Invalid Password", Toast.LENGTH_SHORT).show();
     }
 
     public void setAdminLoginDialog() {

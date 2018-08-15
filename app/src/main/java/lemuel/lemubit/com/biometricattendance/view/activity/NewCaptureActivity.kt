@@ -1,6 +1,8 @@
 package lemuel.lemubit.com.biometricattendance.view.activity
 
+import android.app.Activity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import lemuel.lemubit.com.biometricattendance.R
@@ -29,6 +31,8 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_capture)
         setProgressDialog()
+        addNewFragment(RegistrationInfoFragment())
+
     }
 
     override fun showProgressDialog(title: String, message: String) {
@@ -49,7 +53,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
     }
 
     override fun showInfoToast(info: String) {
-
+Activity.RESULT_OK
     }
 
     override fun onUserInfoGotten(firstName: String, lastName: String, sex: String, dateOfBirth: String, email: String, phoneNumber: String) {
@@ -62,7 +66,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
         //todo transit to next fragment
     }
 
-    override fun onUserPicGotten() {
+    override fun onUserPicGotten(capturedPhotoByteArray: ByteArray) {
 
     }
 
@@ -74,5 +78,11 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
     override fun onRightHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
         rightFingerIDMap = fingerPrintIdMap
         //todo transit to next fragment
+    }
+
+    private fun addNewFragment(fragment: Fragment) {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.reg_frag_placeholder, fragment)
+        ft.commit()
     }
 }
