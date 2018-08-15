@@ -55,7 +55,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
         //todo transit to next fragment
     }
 
-    override fun onRightHandRegistered() {
+    override fun onRightHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
 
     }
 }

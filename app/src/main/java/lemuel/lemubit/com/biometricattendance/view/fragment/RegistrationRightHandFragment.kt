@@ -10,15 +10,16 @@ import com.mapzen.speakerbox.Speakerbox
 import com.wepoy.fp.FingerprintImage
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_registration_left_hand.*
+import kotlinx.android.synthetic.main.fragment_registration_right_hand.*
+
 import lemuel.lemubit.com.biometricattendance.R
 import lemuel.lemubit.com.biometricattendance.nativeFeatures.NativeSensor
 import lemuel.lemubit.com.biometricattendance.util.Fingers
 import lemuel.lemubit.com.biometricattendance.view.IFingerPrintOperation
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations
 
-class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
-    private lateinit var registrationLeftHandListener: RegistrationLeftHandListener
+class RegistrationRightHandFragment : Fragment(), IFingerPrintOperation {
+    internal lateinit var registrationRightHandListener: RegistrationRightHandListener
     private lateinit var iuiOperations: IUIOperations
     private var allFingersCaptured = false
     lateinit var currentContext: Context
@@ -31,21 +32,20 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        registrationLeftHandListener = (context as RegistrationLeftHandListener?)!!
+        registrationRightHandListener = (context as RegistrationRightHandListener?)!!
         iuiOperations = (context as IUIOperations)
         currentContext = this.activity!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_registration_left_hand, container, false)
+        return inflater.inflate(R.layout.fragment_registration_right_hand, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         speakerbox = Speakerbox(activity?.application)
         speakerbox.enableVolumeControl(activity)
-
-        btn_capture_left_fingers.setOnClickListener {
+        btn_capture_right_fingers.setOnClickListener {
             if (!allFingersCaptured) {
                 playInstruction()
                 NativeSensor.getFingerPrintDataObservable(currentContext, iuiOperations, this).subscribe(observer)
@@ -53,16 +53,16 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
                 speakerbox.play(getString(R.string.proceed_with_registration))
             }
         }
-
-        btn_leftHandFrag_next.setOnClickListener {
-            registrationLeftHandListener.onLeftHandRegistered(fingerIDMap)
+        btn_rightHandFrag_next.setOnClickListener {
+            registrationRightHandListener.onRightHandRegistered(fingerIDMap)
         }
+
     }
 
     override fun updateFingerPrintImage(fi: FingerprintImage?) {
         activity?.runOnUiThread {
             val bitmap = Fingers.getBitmap(activity, fi)
-            image_left_fingerprint.setImageBitmap(bitmap)
+            image_right_fingerprint.setImageBitmap(bitmap)
         }
     }
 
@@ -111,11 +111,11 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
     private fun fingerPrintGotten(currentFinger: Int) {
         speakerbox.play(getString(R.string.fingerprint_gotten))
         when (currentFinger) {
-            Fingers.THUMB -> animation_left_thumb.visibility = View.VISIBLE
-            Fingers.INDEX_FINGER -> animation_left_index.visibility = View.VISIBLE
-            Fingers.MIDDLE_FINGER -> animation_left_middle.visibility = View.VISIBLE
-            Fingers.RING_FINGER -> animation_left_ring.visibility = View.VISIBLE
-            Fingers.PINKY_FINGER -> animation_left_pinky.visibility = View.VISIBLE
+            Fingers.THUMB -> animation_right_thumb.visibility = View.VISIBLE
+            Fingers.INDEX_FINGER -> animation_right_index.visibility = View.VISIBLE
+            Fingers.MIDDLE_FINGER -> animation_right_middle.visibility = View.VISIBLE
+            Fingers.RING_FINGER -> animation_right_ring.visibility = View.VISIBLE
+            Fingers.PINKY_FINGER -> animation_right_pinky.visibility = View.VISIBLE
         }
     }
 
@@ -124,10 +124,10 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
     }
 
     private fun enableNext() {
-        btn_leftHandFrag_next.isEnabled = true
+        btn_rightHandFrag_next.isEnabled = true
     }
 
-    interface RegistrationLeftHandListener {
-        fun onLeftHandRegistered(fingerPrintIdMap: HashMap<Int, Int>)
+    interface RegistrationRightHandListener {
+        fun onRightHandRegistered(fingerPrintIdMap: HashMap<Int, Int>)
     }
 }
