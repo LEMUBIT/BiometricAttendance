@@ -11,8 +11,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.rollbar.android.Rollbar;
 
+import io.realm.Realm;
 import lemuel.lemubit.com.biometricattendance.R;
+import lemuel.lemubit.com.biometricattendance.model.DBHelper;
 import lemuel.lemubit.com.biometricattendance.util.AdminDialogHelper;
+import lemuel.lemubit.com.biometricattendance.util.DBOperation;
 import lemuel.lemubit.com.biometricattendance.util.ProgressDialogHelper;
 import lemuel.lemubit.com.biometricattendance.view.AdminLogin;
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations;
@@ -27,16 +30,24 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setProgressDialog();
+        Realm.init(this);
         Rollbar.init(this);
+        testCode();
         // NativeSensor.INSTANCE.init(this, this);
         setAdminLoginDialog();
-        testCode();
     }
 
     //TODO remove when done
     private void testCode() {
-        startActivity(new Intent(this, NewCaptureActivity.class));
-        //adminMaterialDialog.show();
+      // DBOperation dbOperation= DBHelper.newAdminPassword("love");
+//       if(DBHelper.newAdminPassword("love")==DBOperation.SUCCESSFUL)
+//       {
+//           Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+//       }
+//       else
+//       {
+//           Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+//       }
     }
 
     @Override
@@ -48,7 +59,13 @@ public class MainActivity extends AppCompatActivity implements IUIOperations, Ad
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.menu_admin:
+                adminMaterialDialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

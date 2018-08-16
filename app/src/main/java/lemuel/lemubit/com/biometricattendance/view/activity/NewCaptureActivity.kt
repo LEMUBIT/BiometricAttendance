@@ -27,11 +27,13 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
     lateinit var email: String
     lateinit var phoneNumber: String
 
+    lateinit var capturedPhotoByteArray: ByteArray
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_capture)
         setProgressDialog()
-        addNewFragment(RegistrationInfoFragment())
+        addFirstFragment(RegistrationInfoFragment())
 
     }
 
@@ -53,7 +55,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
     }
 
     override fun showInfoToast(info: String) {
-Activity.RESULT_OK
+        Activity.RESULT_OK
     }
 
     override fun onUserInfoGotten(firstName: String, lastName: String, sex: String, dateOfBirth: String, email: String, phoneNumber: String) {
@@ -63,11 +65,12 @@ Activity.RESULT_OK
         this.dateOfBirth = dateOfBirth
         this.email = email
         this.phoneNumber = phoneNumber
-        //todo transit to next fragment
+        addNewFragment(RegistrationTakePicFragment())
     }
 
     override fun onUserPicGotten(capturedPhotoByteArray: ByteArray) {
-
+        this.capturedPhotoByteArray = capturedPhotoByteArray
+        addNewFragment(RegistrationLeftHandFragment())
     }
 
     override fun onLeftHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
@@ -80,7 +83,17 @@ Activity.RESULT_OK
         //todo transit to next fragment
     }
 
+
+
     private fun addNewFragment(fragment: Fragment) {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        ft.replace(R.id.reg_frag_placeholder, fragment)
+        ft.addToBackStack(fragment.tag)
+        ft.commit()
+    }
+
+    private fun addFirstFragment(fragment: Fragment) {
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.reg_frag_placeholder, fragment)
         ft.commit()

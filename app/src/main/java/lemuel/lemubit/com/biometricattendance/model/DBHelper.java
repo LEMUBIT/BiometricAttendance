@@ -25,8 +25,8 @@ public class DBHelper {
 
     public static DBOperation loginAdmin(String password) {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<AdminLoginDb> realDBPassword = realm.where(AdminLoginDb.class).equalTo("id", 1).findAll();
-        if (realDBPassword.get(0).getPassword().equals(password)) {
+        AdminLoginDb realDBPassword = realm.where(AdminLoginDb.class).equalTo("id", 1).findFirst();
+        if (realDBPassword.getPassword().equals(password)) {
             return dbOperationSuccess;
         } else {
             return dbOperationFailure;

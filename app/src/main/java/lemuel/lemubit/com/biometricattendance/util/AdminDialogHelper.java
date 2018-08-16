@@ -1,7 +1,6 @@
 package lemuel.lemubit.com.biometricattendance.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -12,7 +11,7 @@ import lemuel.lemubit.com.biometricattendance.model.DBHelper;
 import lemuel.lemubit.com.biometricattendance.view.AdminLogin;
 
 public class AdminDialogHelper {
-    public static MaterialDialog.Builder getBuilder(Context context, final AdminLogin adminLogin) {
+    public static MaterialDialog.Builder getBuilder(Activity context, final AdminLogin adminLogin) {
         boolean wrapInScrollView = true;
         final Activity[] activity = new Activity[1];
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
@@ -44,6 +43,7 @@ public class AdminDialogHelper {
                             adminLogin.adminLoginFailed();
                         }
                     }
+                    passwordTextView.setText("");
                 })
                 .onNegative((dialog, which) -> dialog.dismiss());
         return builder;

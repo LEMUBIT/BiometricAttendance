@@ -27,10 +27,11 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
     Boolean dateIsSet = false;
     EditText firstName;
     EditText lastName;
-    RadioGroup radioGroup;
-    RadioButton radioButton;
     EditText email;
     EditText phoneNumber;
+    TextView datePicker_txt;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
     int successfulValidation = 1;
     int failedValidation = 0;
     String selectedDate;
@@ -55,8 +56,8 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
         lastName = view.findViewById(R.id.txt_reg_lastname);
         radioGroup = view.findViewById(R.id.radioGroup);
 
-        TextView datePicker = view.findViewById(R.id.txt_date_picker);
-        datePicker.setOnClickListener(view1 -> {
+        datePicker_txt = view.findViewById(R.id.txt_date_picker);
+        datePicker_txt.setOnClickListener(view1 -> {
             new DatePickerDialog(getContext(),
                     this,
                     DateFormatHelper.INSTANCE.getYear(),
@@ -81,6 +82,7 @@ public class RegistrationInfoFragment extends Fragment implements DatePickerDial
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
         dateIsSet = true;
         selectedDate = DateFormatHelper.INSTANCE.formatDateToDayMonthYear(i, i1, i2);
+        datePicker_txt.setText(selectedDate);
     }
 
     /**
