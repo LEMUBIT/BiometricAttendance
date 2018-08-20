@@ -7,12 +7,15 @@ import android.support.v7.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import lemuel.lemubit.com.biometricattendance.R
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations
-import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationInfoFragment
-import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationLeftHandFragment
-import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationRightHandFragment
-import lemuel.lemubit.com.biometricattendance.view.fragment.RegistrationTakePicFragment
+import lemuel.lemubit.com.biometricattendance.view.fragment.*
 
-class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoFragment.RegistrationInfoListener, RegistrationTakePicFragment.RegistrationTakePicListener, RegistrationLeftHandFragment.RegistrationLeftHandListener, RegistrationRightHandFragment.RegistrationRightHandListener {
+class NewCaptureActivity : AppCompatActivity(),
+        IUIOperations,
+        RegistrationInfoFragment.RegistrationInfoListener,
+        RegistrationTakePicFragment.RegistrationTakePicListener,
+        RegistrationLeftHandFragment.RegistrationLeftHandListener,
+        RegistrationRightHandFragment.RegistrationRightHandListener,
+        RegistrationFinalFragment.RegistrationFinalListener {
 
     lateinit var dialogBuilder: MaterialDialog.Builder
     lateinit var dialog: MaterialDialog
@@ -26,7 +29,7 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
     lateinit var dateOfBirth: String
     lateinit var email: String
     lateinit var phoneNumber: String
-
+    lateinit var args: Bundle
     lateinit var capturedPhotoByteArray: ByteArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,32 +68,39 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
         this.dateOfBirth = dateOfBirth
         this.email = email
         this.phoneNumber = phoneNumber
-        addNewFragment(RegistrationTakePicFragment())
+        addNewFragment(RegistrationTakePicFragment(), null)
     }
 
     override fun onUserPicGotten(capturedPhotoByteArray: ByteArray) {
         this.capturedPhotoByteArray = capturedPhotoByteArray
-        addNewFragment(RegistrationLeftHandFragment())
+        addNewFragment(RegistrationLeftHandFragment(), null)
     }
 
     override fun onLeftHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
         leftFingerIDMap = fingerPrintIdMap
-        //todo transit to next fragment
+        addNewFragment(RegistrationRightHandFragment(), null)
     }
 
     override fun onRightHandRegistered(fingerPrintIdMap: HashMap<Int, Int>) {
         rightFingerIDMap = fingerPrintIdMap
-        //todo transit to next fragment
+        setBundle()
+        addNewFragment(RegistrationFinalFragment(), args)
     }
 
+    override fun onUserInfoConfirmed() {
+        TODO("Use here to save all users information and continue, show dialog to make user confirm")
+    }
 
-
-    private fun addNewFragment(fragment: Fragment) {
-        val ft = supportFragmentManager.beginTransaction()
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-        ft.replace(R.id.reg_frag_placeholder, fragment)
-        ft.addToBackStack(fragment.tag)
-        ft.commit()
+    /*Set the bundle to be sent to Final Fragment*/
+    private fun setBundle() {
+        args = Bundle()
+        args.putString("firstName", firstName)
+        args.putString("lastName", lastName)
+        args.putString("sex", sex)
+        args.putString("dateOfBirth", dateOfBirth)
+        args.putString("email", email)
+        args.putString("phoneNumber", phoneNumber)
+        args.putByteArray("capturedPhotoByteArray", capturedPhotoByteArray)
     }
 
     private fun addFirstFragment(fragment: Fragment) {
@@ -98,4 +108,18 @@ class NewCaptureActivity : AppCompatActivity(), IUIOperations, RegistrationInfoF
         ft.replace(R.id.reg_frag_placeholder, fragment)
         ft.commit()
     }
+
+    private fun addNewFragment(fragment: Fragment, bundle: Bundle?) {
+        if (bundle != null) {
+            fragment.arguments = bundle
+        }
+
+        val ft = supportFragmentManager.beginTransaction()
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        ft.replace(R.id.reg_frag_placeholder, fragment)
+        ft.addToBackStack(fragment.tag)
+        ft.commit()
+    }
+
+
 }

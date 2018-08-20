@@ -1,9 +1,12 @@
 package lemuel.lemubit.com.biometricattendance.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class UserInformationDb extends RealmObject{
+    @PrimaryKey
     private int id;
+
     private byte [] userPhoto;
     private String clockedState;
 
