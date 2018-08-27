@@ -3,12 +3,12 @@ package lemuel.lemubit.com.biometricattendance.model;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class UserInformationDb extends RealmObject{
+public class UserInformationDb extends RealmObject {
     @PrimaryKey
     private int id;
 
     private byte [] userPhoto;
-    private String clockedState;
+    private int clockedState;
 
     private String firstName;
     private String lastName;
@@ -46,11 +46,11 @@ public class UserInformationDb extends RealmObject{
         this.userPhoto = userPhoto;
     }
 
-    public String getClockedState() {
+    public int getClockedState() {
         return clockedState;
     }
 
-    public void setClockedState(String clockedState) {
+    public void setClockedState(int clockedState) {
         this.clockedState = clockedState;
     }
 

@@ -1,8 +1,12 @@
 package lemuel.lemubit.com.biometricattendance.model;
 
+import android.util.Log;
+
 import io.realm.Realm;
+import io.realm.RealmResults;
 import lemuel.lemubit.com.biometricattendance.util.ClockedState;
 import lemuel.lemubit.com.biometricattendance.util.DBOperation;
+import lemuel.lemubit.com.biometricattendance.util.TimeHelper;
 
 public class DBHelper {
     private static DBOperation dbOperationSuccess = DBOperation.SUCCESSFUL;
@@ -64,6 +68,42 @@ public class DBHelper {
             return DBOperation.SUCCESSFUL;
         } catch (Exception e) {
             return DBOperation.FAILED;
+        }
+    }
+
+    public static RealmResults<UserInformationDb> getUsers() {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(UserInformationDb.class).findAll();
+    }
+
+    public static DBOperation clockUser(int id, int clockState) {
+        try {
+            AttendanceDb attendanceDb = new AttendanceDb();
+            attendanceDb.setId(id);
+            attendanceDb.setTime(TimeHelper.getCurrentTime());
+            attendanceDb.setDate(TimeHelper.getCurrentDate());
+            attendanceDb.setClockState(clockState);
+
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(realm1 -> realm.copyToRealm(attendanceDb));
+            
+            updateClockedState(id, clockState);
+            return DBOperation.SUCCESSFUL;
+        } catch (Exception e) {
+            return DBOperation.FAILED;
+        }
+    }
+
+    private static void updateClockedState(int id, int clockState) {
+        try {
+            Realm realm = Realm.getDefaultInstance();
+            RealmResults<UserInformationDb> user = realm.where(UserInformationDb.class).equalTo("id", id).findAll();
+            realm.beginTransaction();
+            assert user.get(0) != null;
+            user.get(0).setClockedState(clockState);
+            realm.commitTransaction();
+        } catch (Exception e) {
+            Log.d("Realm Exception", e.getMessage());
         }
     }
 }

@@ -111,14 +111,35 @@ object NativeSensor {
         return id
     }
 
+   private fun getUserID(result: Result): Int? {
+        var fpFeat: ByteArray?
+        var res: Result? = result
+        var userID: Int? = null
+
+        do {
+            if (res == null) break
+            fpFeat = res.data as ByteArray
+            userID = Bione.identify(fpFeat);
+        } while (false)
+
+        return userID
+    }
 
     @JvmStatic
             /**@Returns an Observable which would run getFingerPrintData() in a background thread**/
-    fun getFingerPrintDataObservable(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Observable<Int> {
+    fun getAndSaveFingerprint(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Observable<Int> {
         return Observable.defer {
             Observable.just(getFingerPrintData(currentContext, iuiOperations, iFingerPrintOperation))
-                    .map { result -> NativeSensor.saveFingerPrint(currentContext.applicationContext, result, iuiOperations) }
+                    .map { result -> saveFingerPrint(currentContext.applicationContext, result, iuiOperations) }
         }.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    fun verifyAndCaptureUser(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Observable<Int?>? {
+        return Observable.defer {
+            Observable.just(getFingerPrintData(currentContext, iuiOperations,iFingerPrintOperation))
+                    .map { result -> getUserID(result) }
+        }.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

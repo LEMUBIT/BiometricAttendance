@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/img_row_userImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/novlogo"
+        />
+
+    <TextView
+        android:id="@+id/txt_row_userName"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:paddingLeft="5dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Chibeze Ogbunude"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toEndOf="@+id/img_row_userImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_row_userPhoneNo"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:paddingLeft="5dp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="09094435323"
+        app:layout_constraintBottom_toBottomOf="@+id/img_row_userImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_row_userImage"
+        app:layout_constraintTop_toBottomOf="@+id/txt_row_userName" />
+</android.support.constraint.ConstraintLayout>

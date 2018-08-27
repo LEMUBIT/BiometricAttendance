@@ -48,7 +48,7 @@ class RegistrationLeftHandFragment : Fragment(), IFingerPrintOperation {
         btn_capture_left_fingers.setOnClickListener {
             if (!allFingersCaptured) {
                 playInstruction()
-                NativeSensor.getFingerPrintDataObservable(currentContext, iuiOperations, this).subscribe(observer)
+                NativeSensor.getAndSaveFingerprint(currentContext, iuiOperations, this).subscribe(observer)
             } else {
                 speakerbox.play(getString(R.string.proceed_with_registration))
             }

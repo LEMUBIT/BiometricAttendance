@@ -4,8 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import lemuel.lemubit.com.biometricattendance.R
+import lemuel.lemubit.com.biometricattendance.model.DBHelper
+import lemuel.lemubit.com.biometricattendance.util.DBOperation
+import lemuel.lemubit.com.biometricattendance.util.Fingers
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations
 import lemuel.lemubit.com.biometricattendance.view.fragment.*
 
@@ -58,7 +62,7 @@ class NewCaptureActivity : AppCompatActivity(),
     }
 
     override fun showInfoToast(info: String) {
-        Activity.RESULT_OK
+
     }
 
     override fun onUserInfoGotten(firstName: String, lastName: String, sex: String, dateOfBirth: String, email: String, phoneNumber: String) {
@@ -88,7 +92,31 @@ class NewCaptureActivity : AppCompatActivity(),
     }
 
     override fun onUserInfoConfirmed() {
-        TODO("Use here to save all users information and continue, show dialog to make user confirm")
+        var dbOperation = DBHelper.registerNewUser(rightFingerIDMap.get(Fingers.THUMB)!!,
+                capturedPhotoByteArray,
+                firstName,
+                lastName,
+                sex,
+                dateOfBirth,
+                email,
+                phoneNumber,
+                rightFingerIDMap.get(Fingers.THUMB)!!,
+                rightFingerIDMap.get(Fingers.INDEX_FINGER)!!,
+                rightFingerIDMap.get(Fingers.MIDDLE_FINGER)!!,
+                rightFingerIDMap.get(Fingers.RING_FINGER)!!,
+                rightFingerIDMap.get(Fingers.PINKY_FINGER)!!,
+                leftFingerIDMap.get(Fingers.THUMB)!!,
+                leftFingerIDMap.get(Fingers.INDEX_FINGER)!!,
+                leftFingerIDMap.get(Fingers.MIDDLE_FINGER)!!,
+                leftFingerIDMap.get(Fingers.RING_FINGER)!!,
+                leftFingerIDMap.get(Fingers.PINKY_FINGER)!!
+        )
+
+        if(dbOperation==DBOperation.SUCCESSFUL)
+        {
+            Toast.makeText(this,"User added",Toast.LENGTH_LONG)
+            finish()
+        }
     }
 
     /*Set the bundle to be sent to Final Fragment*/

@@ -22,7 +22,8 @@
             android:value="a81fdaa661dd4864b1e35b0a48bc57e7" />
 
         <activity android:name=".view.activity.AdminHomeActivity" />
-        <activity android:name=".view.activity.NewCaptureActivity"></activity>
+        <activity android:name=".view.activity.NewCaptureActivity" />
+        <activity android:name=".view.activity.ViewUsersActivity"></activity>
     </application>
 
 </manifest>

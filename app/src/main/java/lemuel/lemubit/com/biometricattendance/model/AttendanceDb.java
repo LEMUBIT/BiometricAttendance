@@ -2,11 +2,11 @@ package lemuel.lemubit.com.biometricattendance.model;
 
 import io.realm.RealmObject;
 
-public class AttendanceDb extends RealmObject {
+public class AttendanceDb extends RealmObject  {
     private int id;
     private String time;
     private String date;
-    private String action;
+    private int clockState;
 
     public int getId() {
         return id;
@@ -32,11 +32,11 @@ public class AttendanceDb extends RealmObject {
         this.date = date;
     }
 
-    public String getAction() {
-        return action;
+    public int getClockState() {
+        return clockState;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setClockState(int clockState) {
+        this.clockState = clockState;
     }
 }
