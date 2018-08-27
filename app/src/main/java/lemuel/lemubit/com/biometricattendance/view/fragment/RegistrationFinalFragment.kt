@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_registration_final.*
 import lemuel.lemubit.com.biometricattendance.R
 
-
+//todo show fingerPrint images
 class RegistrationFinalFragment : Fragment() {
     lateinit var registrationFinalListener: RegistrationFinalListener
     private var firstName: String? = null

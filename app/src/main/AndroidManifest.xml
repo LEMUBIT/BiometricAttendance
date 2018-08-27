@@ -23,7 +23,8 @@
 
         <activity android:name=".view.activity.AdminHomeActivity" />
         <activity android:name=".view.activity.NewCaptureActivity" />
-        <activity android:name=".view.activity.ViewUsersActivity"></activity>
+        <activity android:name=".view.activity.ViewUsersActivity" />
+        <activity android:name=".view.activity.ViewAttendanceActivity"></activity>
     </application>
 
 </manifest>

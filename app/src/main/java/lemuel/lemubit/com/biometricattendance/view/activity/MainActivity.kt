@@ -15,8 +15,10 @@ import io.reactivex.disposables.Disposable
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import lemuel.lemubit.com.biometricattendance.R
+import lemuel.lemubit.com.biometricattendance.model.DBHelper
 import lemuel.lemubit.com.biometricattendance.nativeFeatures.NativeSensor
 import lemuel.lemubit.com.biometricattendance.util.AdminDialogHelper
+import lemuel.lemubit.com.biometricattendance.util.DBOperation
 import lemuel.lemubit.com.biometricattendance.util.ProgressDialogHelper
 import lemuel.lemubit.com.biometricattendance.view.AdminLogin
 import lemuel.lemubit.com.biometricattendance.view.IFingerPrintOperation
@@ -120,7 +122,20 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
     private val observer = object : Observer<Int?> {
         override fun onNext(id: Int) {
             if (id >= 0) {
+                val dbOperation = DBHelper.clockUser(id, getOperation())
+                if (dbOperation == DBOperation.CLOCK_OPERATION_ALREADY_PERFORMED) {
+                    showInfoToast("You cannot perform that operation")
+                }
 
+                if(dbOperation==DBOperation.SUCCESSFUL)
+                {
+                    showInfoToast("SUCCESSFUL")
+                }
+
+                if(dbOperation==DBOperation.FAILED)
+                {
+                    showInfoToast("FAILED")
+                }
             }
         }
 

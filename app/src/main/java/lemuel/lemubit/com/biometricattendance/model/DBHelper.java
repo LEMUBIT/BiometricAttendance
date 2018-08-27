@@ -76,24 +76,44 @@ public class DBHelper {
         return realm.where(UserInformationDb.class).findAll();
     }
 
-    public static DBOperation clockUser(int id, int clockState) {
-        try {
-            AttendanceDb attendanceDb = new AttendanceDb();
-            attendanceDb.setId(id);
-            attendanceDb.setTime(TimeHelper.getCurrentTime());
-            attendanceDb.setDate(TimeHelper.getCurrentDate());
-            attendanceDb.setClockState(clockState);
-
-            Realm realm = Realm.getDefaultInstance();
-            realm.executeTransaction(realm1 -> realm.copyToRealm(attendanceDb));
-            
-            updateClockedState(id, clockState);
-            return DBOperation.SUCCESSFUL;
-        } catch (Exception e) {
-            return DBOperation.FAILED;
-        }
+    public static UserInformationDb getUser(int id) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(UserInformationDb.class).equalTo("id", id).findFirst();
     }
 
+    public static DBOperation clockUser(int id, int clockState) {
+
+        if (clockOperationAlreadyPerformed(id, clockState)) {
+            return DBOperation.CLOCK_OPERATION_ALREADY_PERFORMED;
+        } else {
+            try {
+                AttendanceDb attendanceDb = new AttendanceDb();
+                attendanceDb.setId(id);
+                attendanceDb.setTime(TimeHelper.getCurrentTime());
+                attendanceDb.setDate(TimeHelper.getCurrentDate());
+                attendanceDb.setClockState(clockState);
+
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransaction(realm1 -> realm.copyToRealm(attendanceDb));
+
+                updateClockedState(id, clockState);
+                return DBOperation.SUCCESSFUL;
+            } catch (Exception e) {
+                return DBOperation.FAILED;
+            }
+        }
+
+
+    }
+
+
+
+    /**
+     * Update the user Current Clock state
+     *
+     * @param id         user ID
+     * @param clockState new User Clock state
+     */
     private static void updateClockedState(int id, int clockState) {
         try {
             Realm realm = Realm.getDefaultInstance();
@@ -105,5 +125,9 @@ public class DBHelper {
         } catch (Exception e) {
             Log.d("Realm Exception", e.getMessage());
         }
+    }
+
+    private static Boolean clockOperationAlreadyPerformed(int id, int clockState) {
+        return getUser(id).getClockedState() == clockState;
     }
 }
