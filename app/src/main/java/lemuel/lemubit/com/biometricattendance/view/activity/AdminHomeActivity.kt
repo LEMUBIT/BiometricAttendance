@@ -20,7 +20,7 @@ class AdminHomeActivity : AppCompatActivity() {
         }
 
         btn_viewAttendance.setOnClickListener {
-            TODO("Implement 'view attendance'")
+            startActivity( Intent(this, ViewAttendanceActivity::class.java))
         }
     }
 }

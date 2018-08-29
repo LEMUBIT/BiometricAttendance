@@ -76,9 +76,27 @@ public class DBHelper {
         return realm.where(UserInformationDb.class).findAll();
     }
 
-    public static UserInformationDb getUser(int id) {
+    private static UserInformationDb getUser(int id) {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(UserInformationDb.class).equalTo("id", id).findFirst();
+    }
+
+    public static byte[] getUserImage(int id) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(UserInformationDb.class).equalTo("id", id).findFirst().getUserPhoto();
+    }
+
+    public static String getUserName(int id) {
+        Realm realm = Realm.getDefaultInstance();
+        String firstName = realm.where(UserInformationDb.class).equalTo("id", id).findFirst().getFirstName();
+        String lastName = realm.where(UserInformationDb.class).equalTo("id", id).findFirst().getLastName();
+
+        return firstName + " " + lastName;
+    }
+
+    public static RealmResults<AttendanceDb> getAttendance(String date) {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(AttendanceDb.class).equalTo("date", date).sort("time").findAll();
     }
 
     public static DBOperation clockUser(int id, int clockState) {
@@ -89,8 +107,8 @@ public class DBHelper {
             try {
                 AttendanceDb attendanceDb = new AttendanceDb();
                 attendanceDb.setId(id);
-                attendanceDb.setTime(TimeHelper.getCurrentTime());
-                attendanceDb.setDate(TimeHelper.getCurrentDate());
+                attendanceDb.setTime(TimeHelper.INSTANCE.getCurrentTime());
+                attendanceDb.setDate(TimeHelper.INSTANCE.getCurrentDate());
                 attendanceDb.setClockState(clockState);
 
                 Realm realm = Realm.getDefaultInstance();
@@ -105,8 +123,6 @@ public class DBHelper {
 
 
     }
-
-
 
     /**
      * Update the user Current Clock state
@@ -130,4 +146,5 @@ public class DBHelper {
     private static Boolean clockOperationAlreadyPerformed(int id, int clockState) {
         return getUser(id).getClockedState() == clockState;
     }
+
 }

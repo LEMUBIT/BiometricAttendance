@@ -19,8 +19,6 @@ class ViewUsersActivity : AppCompatActivity() {
         setContentView(R.layout.activity_view_users)
         recyclerView = findViewById(R.id.recyclerUserViews)
         setUpRecyclerView()
-        
-
     }
 
     private fun setUpRecyclerView() {

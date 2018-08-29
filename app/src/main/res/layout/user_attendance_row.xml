@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/img_row_attendance_userImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_row_attendance_userName"
+        android:layout_wid0th="0dp"
+        android:layout_height="60dp"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Lemuel Ogbunude"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_row_attendance_userImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_row_attendance_clockDirection"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/img_row_attendance_userImage"
+        app:layout_constraintTop_toBottomOf="@+id/txt_row_attendance_userName" />
+
+    <TextView
+        android:id="@+id/txt_row_attendance_clockTime"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:text="07:55 AM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_row_attendance_clockDirection"
+        app:layout_constraintTop_toBottomOf="@+id/txt_row_attendance_userName" />
 </android.support.constraint.ConstraintLayout>

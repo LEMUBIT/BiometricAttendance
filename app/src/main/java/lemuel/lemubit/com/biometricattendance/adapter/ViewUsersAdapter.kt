@@ -20,6 +20,10 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
         context = context.applicationContext
     }
 
+    internal fun newRecord() {
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent?.context).inflate(R.layout.user_info_row, parent, false)
         return MyViewHolder(itemView)
@@ -44,9 +48,9 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
         var userImage: ImageView
 
         init {
-            userName = view.findViewById(R.id.txt_row_userName)
+            userName = view.findViewById(R.id.txt_row_info_userName)
             userPhone = view.findViewById(R.id.txt_row_userPhoneNo)
-            userImage = view.findViewById(R.id.img_row_userImage)
+            userImage = view.findViewById(R.id.img_row_info_userImage)
         }
     }
 }
