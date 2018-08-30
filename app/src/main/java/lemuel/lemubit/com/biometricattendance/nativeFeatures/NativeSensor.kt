@@ -1,7 +1,6 @@
 package lemuel.lemubit.com.biometricattendance.nativeFeatures
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import com.wepoy.fp.Bione
 import com.wepoy.fp.FingerprintImage
@@ -20,17 +19,19 @@ object NativeSensor {
 
     @JvmStatic
 /*Initialize fingerprint device*/
-    fun init(activity: Activity, iuiOperations: IUIOperations) = object : Thread() {
-        var mScanner: FingerprintScanner = FingerprintScanner.getInstance(activity.applicationContext)
+    fun init(context: Context, iuiOperations: IUIOperations) = object : Thread() {
+        var mScanner: FingerprintScanner = FingerprintScanner.getInstance(context)
         override fun run() {
-            iuiOperations.showInfoToast(activity.getString(R.string.preparing_device))
+            iuiOperations.showInfoToast(context.getString(R.string.preparing_device))
 
-            if ((mScanner.powerOn()) != FingerprintScanner.RESULT_OK) iuiOperations.showInfoToast(activity.getString(R.string.fingerprint_device_power_on_failed))
+            if ((mScanner.powerOn()) != FingerprintScanner.RESULT_OK) iuiOperations.showInfoToast(context.getString(R.string.fingerprint_device_power_on_failed))
+            else iuiOperations.showInfoToast("Device power on success")
 
-            if ((mScanner.open()) != FingerprintScanner.RESULT_OK) iuiOperations.showInfoToast(activity.getString(R.string.fingerprint_device_open_failed))
-            else iuiOperations.showInfoToast(activity.getString(R.string.fingerprint_device_open_success))
+            if ((mScanner.open()) != FingerprintScanner.RESULT_OK) iuiOperations.showInfoToast(context.getString(R.string.fingerprint_device_open_failed) + mScanner.open())
+            else iuiOperations.showInfoToast(context.getString(R.string.fingerprint_device_open_success))
 
-            if ((Bione.initialize(activity, FP_DB_PATH)) != Bione.RESULT_OK) iuiOperations.showInfoToast(activity.getString(R.string.algorithm_initialization_failed))
+            if ((Bione.initialize(context, FP_DB_PATH)) != Bione.RESULT_OK) iuiOperations.showInfoToast(context.getString(R.string.algorithm_initialization_failed) + Bione.initialize(context, FP_DB_PATH))
+            else iuiOperations.showInfoToast("Device algorithm initialization success")
         }
     }.start()
 

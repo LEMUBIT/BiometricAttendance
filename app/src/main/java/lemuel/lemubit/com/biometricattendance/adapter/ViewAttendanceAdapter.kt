@@ -38,7 +38,7 @@ class ViewAttendanceAdapter internal constructor(data: RealmResults<AttendanceDb
         val userPhotobitmap = BitmapFactory.decodeByteArray(userPhotoByte, 0, userPhotoByte.size)
         holder?.userImage?.setImageBitmap(userPhotobitmap)
 
-        val name = DBHelper.getUserName(attendance.id)
+        val name = DBHelper.getUserName(attendance?.id!!)
         holder?.userName?.text = name
 
         holder?.clockTime?.text = attendance.time

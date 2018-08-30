@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
         setProgressDialog()
         Realm.init(this)
         Rollbar.init(this)
-        // NativeSensor.INSTANCE.init(this, this);
+        NativeSensor.init(application.applicationContext, this);
         setAdminLoginDialog()
 
         btn_clockIn.setOnClickListener {
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
     }
 
     override fun showInfoToast(info: String) {
-        Toast.makeText(this, "Message: $info", Toast.LENGTH_SHORT).show()
+        runOnUiThread {  Toast.makeText(this, "Message: $info", Toast.LENGTH_SHORT).show()}
     }
 
     override fun adminLoginSuccess() {

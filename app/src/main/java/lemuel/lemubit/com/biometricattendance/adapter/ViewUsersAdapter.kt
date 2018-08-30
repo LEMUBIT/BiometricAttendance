@@ -49,7 +49,7 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
 
         init {
             userName = view.findViewById(R.id.txt_row_info_userName)
-            userPhone = view.findViewById(R.id.txt_row_userPhoneNo)
+            userPhone = view.findViewById(R.id.txt_row_info_userPhoneNo)
             userImage = view.findViewById(R.id.img_row_info_userImage)
         }
     }

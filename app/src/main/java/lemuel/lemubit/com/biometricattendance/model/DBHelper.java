@@ -2,6 +2,8 @@ package lemuel.lemubit.com.biometricattendance.model;
 
 import android.util.Log;
 
+import com.rollbar.android.Rollbar;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import lemuel.lemubit.com.biometricattendance.util.ClockedState;
@@ -78,18 +80,100 @@ public class DBHelper {
 
     private static UserInformationDb getUser(int id) {
         Realm realm = Realm.getDefaultInstance();
-        return realm.where(UserInformationDb.class).equalTo("id", id).findFirst();
+        return realm.where(UserInformationDb.class).equalTo("id", id)
+                .or()
+                .equalTo("rightThumb", id)
+                .or()
+                .equalTo("rightIndex", id)
+                .or()
+                .equalTo("rightMiddle", id)
+                .or()
+                .equalTo("rightRing", id)
+                .or()
+                .equalTo("rightPinky", id)
+                .or()
+                .equalTo("leftThumb", id)
+                .or()
+                .equalTo("leftIndex", id)
+                .or()
+                .equalTo("leftMiddle", id)
+                .or()
+                .equalTo("leftRing", id)
+                .or()
+                .equalTo("leftPinky", id)
+                .findFirst();
     }
 
     public static byte[] getUserImage(int id) {
         Realm realm = Realm.getDefaultInstance();
-        return realm.where(UserInformationDb.class).equalTo("id", id).findFirst().getUserPhoto();
+        return realm.where(UserInformationDb.class).equalTo("id", id)
+                .or()
+                .equalTo("rightThumb", id)
+                .or()
+                .equalTo("rightIndex", id)
+                .or()
+                .equalTo("rightMiddle", id)
+                .or()
+                .equalTo("rightRing", id)
+                .or()
+                .equalTo("rightPinky", id)
+                .or()
+                .equalTo("leftThumb", id)
+                .or()
+                .equalTo("leftIndex", id)
+                .or()
+                .equalTo("leftMiddle", id)
+                .or()
+                .equalTo("leftRing", id)
+                .or()
+                .equalTo("leftPinky", id).findFirst().getUserPhoto();
     }
 
     public static String getUserName(int id) {
         Realm realm = Realm.getDefaultInstance();
-        String firstName = realm.where(UserInformationDb.class).equalTo("id", id).findFirst().getFirstName();
-        String lastName = realm.where(UserInformationDb.class).equalTo("id", id).findFirst().getLastName();
+        String firstName = realm.where(UserInformationDb.class).equalTo("id", id)
+                .or()
+                .equalTo("rightThumb", id)
+                .or()
+                .equalTo("rightIndex", id)
+                .or()
+                .equalTo("rightMiddle", id)
+                .or()
+                .equalTo("rightRing", id)
+                .or()
+                .equalTo("rightPinky", id)
+                .or()
+                .equalTo("leftThumb", id)
+                .or()
+                .equalTo("leftIndex", id)
+                .or()
+                .equalTo("leftMiddle", id)
+                .or()
+                .equalTo("leftRing", id)
+                .or()
+                .equalTo("leftPinky", id).findFirst().getFirstName();
+
+        String lastName = realm.where(UserInformationDb.class).equalTo("id", id)
+                .or()
+                .equalTo("rightThumb", id)
+                .or()
+                .equalTo("rightIndex", id)
+                .or()
+                .equalTo("rightMiddle", id)
+                .or()
+                .equalTo("rightRing", id)
+                .or()
+                .equalTo("rightPinky", id)
+                .or()
+                .equalTo("leftThumb", id)
+                .or()
+                .equalTo("leftIndex", id)
+                .or()
+                .equalTo("leftMiddle", id)
+                .or()
+                .equalTo("leftRing", id)
+                .or()
+                .equalTo("leftPinky", id).findFirst().getLastName();
 
         return firstName + " " + lastName;
     }
@@ -99,28 +183,35 @@ public class DBHelper {
         return realm.where(AttendanceDb.class).equalTo("date", date).sort("time").findAll();
     }
 
-    public static DBOperation clockUser(int id, int clockState) {
+    public static DBOperation clockUser(int fingerId, int clockState) {
+        Rollbar.instance().log("id:"+String.valueOf(fingerId));
+        Rollbar.instance().log("state="+String.valueOf(getUser(fingerId).getClockedState()));
 
-        if (clockOperationAlreadyPerformed(id, clockState)) {
-            return DBOperation.CLOCK_OPERATION_ALREADY_PERFORMED;
-        } else {
-            try {
-                AttendanceDb attendanceDb = new AttendanceDb();
-                attendanceDb.setId(id);
-                attendanceDb.setTime(TimeHelper.INSTANCE.getCurrentTime());
-                attendanceDb.setDate(TimeHelper.INSTANCE.getCurrentDate());
-                attendanceDb.setClockState(clockState);
+        //TODO(Start from here): Possible reason for crash, Local database might needed to be cleared because
+        //TODO: other finger ID's might be given that Realm is not aware of.
+        //TODO: Add option to clear dataBase
 
-                Realm realm = Realm.getDefaultInstance();
-                realm.executeTransaction(realm1 -> realm.copyToRealm(attendanceDb));
+        return DBOperation.SUCCESSFUL;
 
-                updateClockedState(id, clockState);
-                return DBOperation.SUCCESSFUL;
-            } catch (Exception e) {
-                return DBOperation.FAILED;
-            }
-        }
-
+//        if (clockOperationAlreadyPerformed(fingerId, clockState)) {
+//            return DBOperation.CLOCK_OPERATION_ALREADY_PERFORMED;
+//        } else {
+//            try {
+//                AttendanceDb attendanceDb = new AttendanceDb();
+//                attendanceDb.setId(fingerId);
+//                attendanceDb.setTime(TimeHelper.INSTANCE.getCurrentTime());
+//                attendanceDb.setDate(TimeHelper.INSTANCE.getCurrentDate());
+//                attendanceDb.setClockState(clockState);
+//
+//                Realm realm = Realm.getDefaultInstance();
+//                realm.executeTransaction(realm1 -> realm.copyToRealm(attendanceDb));
+//
+//                updateClockedState(fingerId, clockState);
+//                return DBOperation.SUCCESSFUL;
+//            } catch (Exception e) {
+//                return DBOperation.FAILED;
+//            }
+//        }
 
     }
 
@@ -133,7 +224,27 @@ public class DBHelper {
     private static void updateClockedState(int id, int clockState) {
         try {
             Realm realm = Realm.getDefaultInstance();
-            RealmResults<UserInformationDb> user = realm.where(UserInformationDb.class).equalTo("id", id).findAll();
+            RealmResults<UserInformationDb> user = realm.where(UserInformationDb.class).equalTo("id", id)
+                    .or()
+                    .equalTo("rightThumb", id)
+                    .or()
+                    .equalTo("rightIndex", id)
+                    .or()
+                    .equalTo("rightMiddle", id)
+                    .or()
+                    .equalTo("rightRing", id)
+                    .or()
+                    .equalTo("rightPinky", id)
+                    .or()
+                    .equalTo("leftThumb", id)
+                    .or()
+                    .equalTo("leftIndex", id)
+                    .or()
+                    .equalTo("leftMiddle", id)
+                    .or()
+                    .equalTo("leftRing", id)
+                    .or()
+                    .equalTo("leftPinky", id).findAll();
             realm.beginTransaction();
             assert user.get(0) != null;
             user.get(0).setClockedState(clockState);
@@ -144,6 +255,8 @@ public class DBHelper {
     }
 
     private static Boolean clockOperationAlreadyPerformed(int id, int clockState) {
+        Rollbar.instance().log("clockOperationAlreadyPerformed: "+"Id:"+id+" "+"ClockState"+clockState);
+        //todo : getClockedState() returning null after getUser() call, possible solution above
         return getUser(id).getClockedState() == clockState;
     }
 
