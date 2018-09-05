@@ -16,4 +16,9 @@ public class AppFirstRunChecker {
             return false;
         }
     }
+
+    public static void refreshApp (Activity activity){
+        SharedPreferences mSettings = activity.getApplicationContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+            mSettings.edit().putBoolean("firstrun", true).apply();
+    }
 }

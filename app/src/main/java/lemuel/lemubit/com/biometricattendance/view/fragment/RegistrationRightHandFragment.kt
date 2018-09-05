@@ -91,11 +91,11 @@ class RegistrationRightHandFragment : Fragment(), IFingerPrintOperation {
 
     private fun playInstruction() {
         when (currentFinger) {
-            Fingers.THUMB -> speakerbox.play(getString(R.string.place_left_thumb))
-            Fingers.INDEX_FINGER -> speakerbox.play(getString(R.string.place_left_index))
-            Fingers.MIDDLE_FINGER -> speakerbox.play(getString(R.string.place_left_middle))
-            Fingers.RING_FINGER -> speakerbox.play(getString(R.string.place_left_ring))
-            Fingers.PINKY_FINGER -> speakerbox.play(getString(R.string.place_left_pinky))
+            Fingers.THUMB -> speakerbox.play(getString(R.string.place_right_thumb))
+            Fingers.INDEX_FINGER -> speakerbox.play(getString(R.string.place_right_index))
+            Fingers.MIDDLE_FINGER -> speakerbox.play(getString(R.string.place_right_middle))
+            Fingers.RING_FINGER -> speakerbox.play(getString(R.string.place_right_ring))
+            Fingers.PINKY_FINGER -> speakerbox.play(getString(R.string.place_right_pinky))
         }
     }
 

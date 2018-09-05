@@ -19,6 +19,7 @@ class ViewAttendanceAdapter internal constructor(data: RealmResults<AttendanceDb
 
      init {
         context = context.applicationContext
+         TODO("Implement feature to check if deadline is passed, can be a static time for now, can use colour or Lottie")
     }
 
 

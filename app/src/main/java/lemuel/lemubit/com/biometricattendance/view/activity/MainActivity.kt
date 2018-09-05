@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
                 if(dbOperation==DBOperation.SUCCESSFUL)
                 {
                     showInfoToast("SUCCESSFUL")
+                    TODO("Display last operation using the ID, e.g John clocked out by 12.00.21")
                 }
 
                 if(dbOperation==DBOperation.FAILED)

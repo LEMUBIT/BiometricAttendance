@@ -14,10 +14,12 @@ import io.realm.RealmResults
 import lemuel.lemubit.com.biometricattendance.R
 import lemuel.lemubit.com.biometricattendance.model.UserInformationDb
 
+
 class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb>, var context: Context) : RealmRecyclerViewAdapter<UserInformationDb, ViewUsersAdapter.MyViewHolder>(data, true) {
 
     init {
         context = context.applicationContext
+        TODO("Set on click listener in this class to get adapter position and display user info")
     }
 
     internal fun newRecord() {
@@ -52,5 +54,6 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
             userPhone = view.findViewById(R.id.txt_row_info_userPhoneNo)
             userImage = view.findViewById(R.id.img_row_info_userImage)
         }
+
     }
 }

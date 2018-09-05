@@ -112,7 +112,7 @@ object NativeSensor {
         return id
     }
 
-   private fun getUserID(result: Result): Int? {
+    private fun getUserID(result: Result): Int? {
         var fpFeat: ByteArray?
         var res: Result? = result
         var userID: Int? = null
@@ -138,9 +138,21 @@ object NativeSensor {
 
     fun verifyAndCaptureUser(currentContext: Context, iuiOperations: IUIOperations, iFingerPrintOperation: IFingerPrintOperation): Observable<Int?>? {
         return Observable.defer {
-            Observable.just(getFingerPrintData(currentContext, iuiOperations,iFingerPrintOperation))
+            Observable.just(getFingerPrintData(currentContext, iuiOperations, iFingerPrintOperation))
                     .map { result -> getUserID(result) }
         }.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun clearDatabase(): String {
+        val error = Bione.clear()
+
+        if (error == Bione.RESULT_OK) {
+            return "Database Clearance Successful!"
+        } else {
+            return "Database Clearance Failed" +
+                    "!"
+        }
+
     }
 }
