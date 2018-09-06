@@ -7,14 +7,16 @@ import android.widget.Toast
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_admin_home.*
 import lemuel.lemubit.com.biometricattendance.R
+import lemuel.lemubit.com.biometricattendance.model.DBHelper
 import lemuel.lemubit.com.biometricattendance.nativeFeatures.NativeSensor
 import lemuel.lemubit.com.biometricattendance.util.AppFirstRunChecker
 
 class AdminHomeActivity : AppCompatActivity() {
-
+    lateinit var password: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_home)
+        password = intent.getStringExtra("password")
         btn_newcapture.setOnClickListener {
             startActivity(Intent(this, NewCaptureActivity::class.java))
         }
@@ -34,12 +36,11 @@ class AdminHomeActivity : AppCompatActivity() {
             realm.deleteAll()
             realm.commitTransaction()
 
-            AppFirstRunChecker.refreshApp(this@AdminHomeActivity)
-            //val booleanMessage = Realm.deleteRealm(Realm.getDefaultConfiguration())
+            //AppFirstRunChecker.refreshApp(this@AdminHomeActivity)
             Toast.makeText(this@AdminHomeActivity, message, Toast.LENGTH_LONG).show()
-            //Toast.makeText(this@AdminHomeActivity, booleanMessage.toString(), Toast.LENGTH_LONG).show()
 
-            TODO("After clearing Database, password should be automatically set back to how it was")
+            /**reset the password since all DB would be cleared**/
+            DBHelper.newAdminPassword(password)
         }
     }
 }

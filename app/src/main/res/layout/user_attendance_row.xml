@@ -1,36 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_row_attendance_userImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txt_row_attendance_userName"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        style="@style/Base.TextAppearance.AppCompat.Large"
-        android:gravity="center"
-        android:paddingStart="5dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_warning"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txt_row_attendance_clockTime"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="@+id/txt_row_attendance_clockTime"
+        app:layout_constraintTop_toBottomOf="@+id/txt_row_attendance_clockTime"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="warning.json"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/txt_row_attendance_userName"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:paddingStart="5dp"
         android:text="Lemuel Ogbunude"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_row_attendance_userImage"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@+id/txt_row_attendance_userName"
+        app:layout_constraintStart_toStartOf="@+id/txt_row_attendance_userName"
+        app:layout_constraintTop_toBottomOf="@+id/txt_row_attendance_userName" />
 
     <ImageView
         android:id="@+id/img_row_attendance_clockDirection"
@@ -39,11 +70,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/img_row_attendance_userImage"
-        app:layout_constraintTop_toBottomOf="@+id/txt_row_attendance_userName" />
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
 
     <TextView
         android:id="@+id/txt_row_attendance_clockTime"
-        style="@style/Base.TextAppearance.AppCompat.Large"
+        style=""
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginEnd="8dp"
@@ -54,5 +85,5 @@
         android:text="07:55 AM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_row_attendance_clockDirection"
-        app:layout_constraintTop_toBottomOf="@+id/txt_row_attendance_userName" />
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
 </android.support.constraint.ConstraintLayout>

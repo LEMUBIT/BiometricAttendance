@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import com.mapzen.speakerbox.Speakerbox
 import com.rollbar.android.Rollbar
 import com.wepoy.fp.FingerprintImage
 import io.reactivex.Observer
@@ -20,6 +21,7 @@ import lemuel.lemubit.com.biometricattendance.nativeFeatures.NativeSensor
 import lemuel.lemubit.com.biometricattendance.util.AdminDialogHelper
 import lemuel.lemubit.com.biometricattendance.util.DBOperation
 import lemuel.lemubit.com.biometricattendance.util.ProgressDialogHelper
+import lemuel.lemubit.com.biometricattendance.util.TimeHelper
 import lemuel.lemubit.com.biometricattendance.view.AdminLogin
 import lemuel.lemubit.com.biometricattendance.view.IFingerPrintOperation
 import lemuel.lemubit.com.biometricattendance.view.IUIOperations
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
     private lateinit var progressMaterialDialog: MaterialDialog
     private lateinit var adminMaterialDialog: MaterialDialog
     private var clockOperation: Int = -1
+    lateinit var speakerbox: Speakerbox
 
     //Variables to check which operation was selected by user,
     //this is different from ClockedState which describes if the user has been clocked in or out
@@ -42,8 +45,11 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
         setProgressDialog()
         Realm.init(this)
         Rollbar.init(this)
-        NativeSensor.init(application.applicationContext, this);
+        NativeSensor.init(application.applicationContext, this)
         setAdminLoginDialog()
+
+        speakerbox = Speakerbox(application)
+        speakerbox.enableVolumeControl(this)
 
         btn_clockIn.setOnClickListener {
             NativeSensor.verifyAndCaptureUser(this, this, this)?.subscribe(observer)
@@ -89,11 +95,13 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
     }
 
     override fun showInfoToast(info: String) {
-        runOnUiThread {  Toast.makeText(this, "Message: $info", Toast.LENGTH_SHORT).show()}
+        runOnUiThread { Toast.makeText(this, "Message: $info", Toast.LENGTH_SHORT).show() }
     }
 
-    override fun adminLoginSuccess() {
-        startActivity(Intent(this, AdminHomeActivity::class.java))
+    override fun adminLoginSuccess(password: String) {
+        val bundle = Bundle()
+        bundle.putString("password", password)
+        startActivity(Intent(this, AdminHomeActivity::class.java).putExtras(bundle))
     }
 
     override fun adminLoginFailed() {
@@ -101,6 +109,31 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
     }
 
     override fun updateFingerPrintImage(fi: FingerprintImage?) {
+    }
+
+    private fun updateLastOperation(name: String) {
+        var clockOperation = "clocked"
+        when (getOperation()) {
+            clockInOperation -> clockOperation = " clocked in "
+            clockOutOperation -> clockOperation = " clocked out "
+        }
+
+        val time = TimeHelper.currentTime
+
+        val message = "$name$clockOperation by $time"
+
+        runOnUiThread { txt_last_operation.text = message }
+    }
+
+    private fun welcomeUser(username: String) {
+        runOnUiThread {
+            if (getOperation() == clockInOperation) {
+                speakerbox.play("Welcome $username")
+            } else {
+                speakerbox.play("Goodbye $username")
+            }
+        }
+
     }
 
     private fun clockInOperation() {
@@ -127,14 +160,14 @@ class MainActivity : AppCompatActivity(), IUIOperations, AdminLogin, IFingerPrin
                     showInfoToast("You cannot perform that operation")
                 }
 
-                if(dbOperation==DBOperation.SUCCESSFUL)
-                {
+                if (dbOperation == DBOperation.SUCCESSFUL) {
                     showInfoToast("SUCCESSFUL")
-                    TODO("Display last operation using the ID, e.g John clocked out by 12.00.21")
+                    var username = DBHelper.getUserName(id)
+                    updateLastOperation(username)
+                    welcomeUser(username)
                 }
 
-                if(dbOperation==DBOperation.FAILED)
-                {
+                if (dbOperation == DBOperation.FAILED) {
                     showInfoToast("FAILED")
                 }
             }

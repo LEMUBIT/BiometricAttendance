@@ -30,7 +30,7 @@ public class AdminDialogHelper {
                     if (firstRunAndNotEmpty(activity[0], passwordTextView)) {
                         DBOperation dbOperation = DBHelper.newAdminPassword(passwordTextView.getText().toString());
                         if (dbOperation == DBOperation.SUCCESSFUL) {
-                            adminLogin.adminLoginSuccess();
+                            adminLogin.adminLoginSuccess(passwordTextView.getText().toString());
                         } else {
                             adminLogin.adminLoginFailed();
                         }
@@ -38,7 +38,7 @@ public class AdminDialogHelper {
                     } else if (notFirstRunAndNotEmpty(activity[0], passwordTextView)) {
                         DBOperation dbOperation = DBHelper.loginAdmin(passwordTextView.getText().toString());
                         if (dbOperation == DBOperation.SUCCESSFUL) {
-                            adminLogin.adminLoginSuccess();
+                            adminLogin.adminLoginSuccess(passwordTextView.getText().toString());
                         } else {
                             adminLogin.adminLoginFailed();
                         }
@@ -49,11 +49,11 @@ public class AdminDialogHelper {
         return builder;
     }
 
-    public static boolean firstRunAndNotEmpty(Activity activity, TextView txtPassword) {
+    private static boolean firstRunAndNotEmpty(Activity activity, TextView txtPassword) {
         return AppFirstRunChecker.isFirstRun(activity) && !TextUtils.isEmpty(txtPassword.getText().toString());
     }
 
-    public static boolean notFirstRunAndNotEmpty(Activity activity, TextView txtPassword) {
+    private static boolean notFirstRunAndNotEmpty(Activity activity, TextView txtPassword) {
         return !AppFirstRunChecker.isFirstRun(activity) && !TextUtils.isEmpty(txtPassword.getText().toString());
     }
 }

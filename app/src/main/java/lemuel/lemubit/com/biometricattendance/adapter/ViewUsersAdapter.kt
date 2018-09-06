@@ -19,7 +19,6 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
 
     init {
         context = context.applicationContext
-        TODO("Set on click listener in this class to get adapter position and display user info")
     }
 
     internal fun newRecord() {
@@ -36,8 +35,15 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
         val user = getItem(position)
         holder.userName.text = """${user?.firstName} ${user?.lastName}"""
         holder.userPhone.text = user?.phoneNumber
+
         val bitmap = BitmapFactory.decodeByteArray(user?.userPhoto, 0, user?.userPhoto?.size!!)
         holder.userImage.setImageBitmap(bitmap)
+
+        holder.userEmail.text = user.email
+
+        holder.userSex.text = user.sex
+
+
     }
 
     override fun getItemId(index: Int): Long {
@@ -48,11 +54,15 @@ class ViewUsersAdapter internal constructor(data: RealmResults<UserInformationDb
         var userName: TextView
         var userPhone: TextView
         var userImage: ImageView
+        var userSex: TextView
+        var userEmail: TextView
 
         init {
             userName = view.findViewById(R.id.txt_row_info_userName)
             userPhone = view.findViewById(R.id.txt_row_info_userPhoneNo)
             userImage = view.findViewById(R.id.img_row_info_userImage)
+            userSex = view.findViewById(R.id.txt_row_info_userSex)
+            userEmail = view.findViewById(R.id.txt_row_info_userEmail)
         }
 
     }

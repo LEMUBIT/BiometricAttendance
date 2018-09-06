@@ -17,6 +17,7 @@ public class AppFirstRunChecker {
         }
     }
 
+    //Allows Admin enter any password when login in and uses that as new password
     public static void refreshApp (Activity activity){
         SharedPreferences mSettings = activity.getApplicationContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
             mSettings.edit().putBoolean("firstrun", true).apply();

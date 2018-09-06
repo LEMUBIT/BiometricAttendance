@@ -22,11 +22,11 @@ object TimeHelper {
         val parser = SimpleDateFormat("hh:mm:ss a", Locale.UK)
         val mCurrentTime = parser.parse(registeredTime)
         val mDeadline = parser.parse("08:14:59 am")
-
-        return mCurrentTime.after(mDeadline)
+        val mDeadlineStop = parser.parse("09:30:00 am")
+        return mCurrentTime.after(mDeadline) && mCurrentTime.before(mDeadlineStop)
     }
 
-     fun formatDate(year: Int, month: Int, day: Int): String {
+    fun formatDate(year: Int, month: Int, day: Int): String {
         val cal = Calendar.getInstance()
         cal.set(year, month, day)
         val format1 = SimpleDateFormat("dd/MM/yyyy", Locale.UK)
